@@ -1,6 +1,5 @@
 'use client';
 
-import { SessionProvider } from 'next-auth/react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { ReactNode } from 'react';
 
@@ -18,9 +17,7 @@ export default function Providers({ children }: ProvidersProps) {
         audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
       }}
     >
-      <SessionProvider>
-        {children}
-      </SessionProvider>
+      {children}
     </Auth0Provider>
   );
 } 

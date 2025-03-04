@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Dashboard",
+    template: "%s",
     default: "Dashboard",
   },
   description: "Dashboard for your application",
