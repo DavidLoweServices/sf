@@ -28,5 +28,5 @@ export function middleware(request: NextRequest) {
 
 // Only run middleware on dashboard routes
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/dashboard/:path*', "/"],
 }; 
