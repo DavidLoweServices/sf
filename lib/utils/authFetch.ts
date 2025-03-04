@@ -61,7 +61,7 @@ async function getJwtToken(): Promise<string> {
         // Default to 1 hour expiration
         jwtExpiration = now + 60 * 60 * 1000;
       }
-    } catch (e) {
+    } catch {
       // If decoding fails, default to 1 hour expiration
       jwtExpiration = now + 60 * 60 * 1000;
     }

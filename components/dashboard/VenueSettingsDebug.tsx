@@ -10,7 +10,6 @@ interface VenueSetting {
 }
 
 interface VenueSettingsResponse {
-  messages: any[];
   succeeded: boolean;
   data: {
     id: string;
