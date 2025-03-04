@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 // PKCE callback handler
 export async function GET(req: NextRequest) {
