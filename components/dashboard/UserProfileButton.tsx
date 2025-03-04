@@ -22,7 +22,11 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 export default function UserProfileButton() {
   const { data, error, isLoading } = useSWR<UserResponse>('/api/auth/me', fetcher, {
     revalidateOnFocus: false,
-    revalidateOnReconnect: false
+    revalidateOnReconnect: false,
+    refreshInterval: 0,
+    dedupingInterval: 60000,
+    keepPreviousData: true,
+    loadingTimeout: 3000
   });
 
   if (isLoading) {
