@@ -3,9 +3,20 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, error } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything until mounted to prevent hydration issues
+  if (!mounted) {
+    return null;
+  }
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -26,6 +37,36 @@ export default function Home() {
             <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-4"></div>
             <div className="h-4 w-64 bg-gray-200 rounded mx-auto"></div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    console.error('Auth error:', error);
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+        <div className="text-center space-y-8">
+          <div className="mb-8">
+            <Image 
+              src="/logo.png" 
+              alt="WannaBook" 
+              width={300} 
+              height={40} 
+              priority
+              className="mx-auto"
+            />
+          </div>
+          <div className="text-red-600">
+            Authentication error. Please try again.
+          </div>
+          <Link 
+            href="/api/auth/login"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          >
+            Sign In
+          </Link>
         </div>
       </div>
     );
@@ -74,7 +115,7 @@ export default function Home() {
               href="/api/auth/login"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
             >
-              Sign In 
+              Sign In
             </Link>
           )}
         </div>
