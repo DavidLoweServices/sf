@@ -133,7 +133,7 @@ export default function JwtDebugPage() {
     fetchTokenData();
   }, []);
 
-  const formatJson = (obj: any) => {
+  const formatJson = (obj: JwtHeader | JwtPayload | Record<string, unknown>) => {
     if (!obj) return '{}';
     try {
       return JSON.stringify(obj, null, 2);
