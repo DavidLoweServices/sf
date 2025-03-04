@@ -252,12 +252,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       name: "Settings",
       href: "/dashboard/settings",
       icon: <Icons.Settings />,
-    },
-    {
-      name: "Profile",
-      href: "/dashboard/profile",
-      icon: <Icons.User />,
-    },
+    }
   ];
 
   return (
@@ -281,7 +276,6 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         {/* Logo and toggle button */}
         <div className="flex items-center justify-between p-3 border-b border-gray-200 relative">
           <div className="w-full flex md:justify-center pl-1 md:pl-0">
-            <Link href="/dashboard">
               <Image 
                 src="/logo.png" 
                 alt="Dashboard Logo" 
@@ -290,7 +284,6 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 className="max-w-[120px] md:max-w-[140px] h-auto"
                 priority
               />
-            </Link>
           </div>
           <Button
             variant="ghost"

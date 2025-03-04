@@ -69,7 +69,6 @@ export default function UserProfileButton() {
 
   return (
     <div className="p-3 border-t border-gray-200">
-      <Link href="/dashboard/profile" className="block">
         <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100">
           {userData.picture ? (
             <Image 
@@ -95,7 +94,6 @@ export default function UserProfileButton() {
             )}
           </div>
         </div>
-      </Link>
     </div>
   );
 } 

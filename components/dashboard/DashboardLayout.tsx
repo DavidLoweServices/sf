@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 // Menu icon component
@@ -70,7 +71,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           >
             <MenuIcon />
           </Button>
-          <span className="ml-3 font-medium text-gray-800">Dashboard</span>
+          <span className="ml-3 font-medium text-gray-800">
+          <Image 
+                src="/logo.png" 
+                alt="Dashboard Logo" 
+                width={150} 
+                height={40} 
+                className="max-w-[120px] md:max-w-[140px] h-auto"
+                priority
+              />
+
+          </span>
         </div>
 
         {/* Main content area with scrolling */}
