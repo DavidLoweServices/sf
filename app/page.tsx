@@ -61,12 +61,12 @@ export default function Home() {
           <div className="text-red-600">
             Authentication error. Please try again.
           </div>
-          <Link 
-            href="/api/auth/login"
+          <a 
+            href={`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_AUTH0_BASE_URL + '/api/auth/callback')}&scope=openid profile email&audience=${encodeURIComponent('https://bmx/api')}&state=${encodeURIComponent(JSON.stringify({ returnTo: '/dashboard' }))}`}
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
           >
             Sign In
-          </Link>
+          </a>
         </div>
       </div>
     );
@@ -111,12 +111,12 @@ export default function Home() {
               Go to Dashboard
             </Link>
           ) : (
-            <Link 
-              href="/api/auth/login"
+            <a 
+              href={`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_AUTH0_BASE_URL + '/api/auth/callback')}&scope=openid profile email&audience=${encodeURIComponent('https://bmx/api')}&state=${encodeURIComponent(JSON.stringify({ returnTo: '/dashboard' }))}`}
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
             >
               Sign In
-            </Link>
+            </a>
           )}
         </div>
       </div>
