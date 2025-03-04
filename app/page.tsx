@@ -5,11 +5,7 @@ import Image from 'next/image';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function Home() {
-  const { user, isLoading } = useUser({
-    fetchOptions: {
-      credentials: 'include' // Explicitly include credentials
-    }
-  });
+  const { user, isLoading } = useUser();
 
   // Show loading state while checking authentication
   if (isLoading) {
