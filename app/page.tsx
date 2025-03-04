@@ -2,26 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import useSWR from 'swr';
-
-interface UserResponse {
-  isAuthenticated: boolean;
-  user?: {
-    name?: string;
-    email?: string;
-  };
-}
-
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function Home() {
-  const { data, isLoading } = useSWR<UserResponse>('/api/auth/me', fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    refreshInterval: 0,
-    dedupingInterval: 60000,
-    keepPreviousData: true
-  });
+  const { user, isLoading } = useUser();
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -47,9 +31,6 @@ export default function Home() {
     );
   }
 
-  const isAuthenticated = data?.isAuthenticated ?? false;
-  const userName = data?.user?.name;
-
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <div className="text-center space-y-8">
@@ -68,12 +49,12 @@ export default function Home() {
         {/* Welcome Message */}
         <div className="mb-8">
           <h2 className="text-2xl text-gray-700 mb-2">
-            {isAuthenticated 
-              ? `Welcome back, ${userName || 'User'}!`
+            {user 
+              ? `Welcome back, ${user.name || 'User'}!`
               : 'Welcome to WannaBook'}
           </h2>
           <p className="text-gray-600">
-            {isAuthenticated 
+            {user 
               ? 'Manage your bookings and schedule'
               : 'Sign in to manage your bookings'}
           </p>
@@ -81,7 +62,7 @@ export default function Home() {
 
         {/* Action Button */}
         <div>
-          {isAuthenticated ? (
+          {user ? (
             <Link 
               href="/dashboard"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
@@ -90,7 +71,7 @@ export default function Home() {
             </Link>
           ) : (
             <Link 
-              href="/api/auth/login?returnTo=/dashboard"
+              href="/api/auth/login"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
             >
               Sign In
