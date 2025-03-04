@@ -87,6 +87,8 @@ export default function UserProfileButton() {
         <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100">
           {userData.picture ? (
             <Image 
+              width={36}
+              height={36}
               src={userData.picture} 
               alt={userData.name || 'User'} 
               className="w-9 h-9 rounded-full object-cover"
