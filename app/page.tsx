@@ -15,7 +15,7 @@ interface UserResponse {
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function Home() {
-  const { data } = useSWR<UserResponse>('/api/auth/me', fetcher, {
+  const { data, isLoading } = useSWR<UserResponse>('/api/auth/me', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0,
@@ -23,11 +23,38 @@ export default function Home() {
     keepPreviousData: true
   });
 
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+        <div className="text-center space-y-8">
+          <div className="mb-8">
+            <Image 
+              src="/logo.png" 
+              alt="WannaBook" 
+              width={300} 
+              height={40} 
+              priority
+              className="mx-auto"
+            />
+          </div>
+          <div className="animate-pulse">
+            <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-4"></div>
+            <div className="h-4 w-64 bg-gray-200 rounded mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isAuthenticated = data?.isAuthenticated ?? false;
+  const userName = data?.user?.name;
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <div className="text-center space-y-8">
         {/* Logo */}
-        <div className="flex justify-center">
+        <div className="mb-8">
           <Image 
             src="/logo.png" 
             alt="WannaBook" 
@@ -41,20 +68,20 @@ export default function Home() {
         {/* Welcome Message */}
         <div className="mb-8">
           <h2 className="text-2xl text-gray-700 mb-2">
-            {data?.isAuthenticated 
-              ? `Welcome back, ${data.user?.name || 'User'}!`
+            {isAuthenticated 
+              ? `Welcome back, ${userName || 'User'}!`
               : 'Welcome to WannaBook'}
           </h2>
           <p className="text-gray-600">
-            {data?.isAuthenticated 
-              ? 'Manage your finances'
-              : 'Sign in to manage your finances'}
+            {isAuthenticated 
+              ? 'Manage your bookings and schedule'
+              : 'Sign in to manage your bookings'}
           </p>
         </div>
 
         {/* Action Button */}
         <div>
-          {data?.isAuthenticated ? (
+          {isAuthenticated ? (
             <Link 
               href="/dashboard"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
