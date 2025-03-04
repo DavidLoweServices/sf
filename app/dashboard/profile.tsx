@@ -14,7 +14,6 @@ interface User {
   nickname?: string;
   updated_at?: string;
   email_verified?: boolean;
-  [key: string]: any; // For any additional properties
 }
 
 interface UserResponse {
