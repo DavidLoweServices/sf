@@ -1,4 +1,4 @@
-import { handleAuth, HandleAuth } from '@auth0/nextjs-auth0';
+import { handleAuth } from '@auth0/nextjs-auth0';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Modified to work with NextJS App Router and Auth0

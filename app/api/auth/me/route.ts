@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     let sessionData;
     try {
       sessionData = JSON.parse(sessionCookie.value);
-    } catch (error) {
+    } catch {
       // Backward compatibility for old format (just the ID token)
       sessionData = { idToken: sessionCookie.value };
     }

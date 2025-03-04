@@ -16,7 +16,7 @@ export default function Home() {
         </a>
         
         <p className="text-sm text-gray-500 mt-4">
-          You'll be redirected to Auth0 for authentication if you're not logged in.
+          You&apos;ll be redirected to Auth0 for authentication if you&apos;re not logged in.
         </p>
       </div>
     </main>
