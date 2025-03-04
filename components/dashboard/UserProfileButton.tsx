@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface User {
   sub?: string;
@@ -85,7 +86,7 @@ export default function UserProfileButton() {
       <Link href="/dashboard/profile" className="block">
         <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100">
           {userData.picture ? (
-            <img 
+            <Image 
               src={userData.picture} 
               alt={userData.name || 'User'} 
               className="w-9 h-9 rounded-full object-cover"
