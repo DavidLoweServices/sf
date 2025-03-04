@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import UserProfileButton from "@/components/dashboard/UserProfileButton";
 import LogoutButton from "@/components/dashboard/LogoutButton";
+import { XIcon } from "lucide-react";
 
 // Improved JWT decoding function based on JwtDebugPage
 const decodeJwt = (token: string) => {
@@ -270,7 +271,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         className={cn(
           "fixed inset-y-0 left-0 z-30 flex h-screen w-60 flex-col bg-white border-r border-gray-200 text-gray-800 transition-transform duration-300",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          "md:translate-x-0 md:relative"
+          "md:translate-x-0 md:relative",
+          "overflow-hidden"
         )}
       >
         {/* Logo and toggle button */}
@@ -367,8 +369,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto p-3">
-          <ul className="space-y-1">
+        <nav className="flex-1 overflow-y-auto">
+          <ul className="space-y-1 px-2 pt-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -391,10 +393,12 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           </ul>
         </nav>
 
-        {/* User Profile Button */}
-        <UserProfileButton />
-        {/* Logout Button */}
-        <LogoutButton />
+        <div className="flex-shrink-0 mt-auto">
+          {/* User Profile Button */}
+          <UserProfileButton />
+          {/* Logout Button */}
+          <LogoutButton />
+        </div>
       </aside>
     </>
   );
