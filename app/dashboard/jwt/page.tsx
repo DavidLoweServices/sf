@@ -122,7 +122,7 @@ export default function JwtDebugPage() {
     if (!obj) return '{}';
     try {
       return JSON.stringify(obj, null, 2);
-    } catch (e) {
+    } catch {
       return '{}';
     }
   };
