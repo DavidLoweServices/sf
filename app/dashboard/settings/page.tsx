@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import VenueSettingsDebug from "@/components/dashboard/VenueSettingsDebug";
 
 export const metadata: Metadata = {
-  title: "Settings",
+  title: "Wannabook | Settings",
   description: "Manage your account and venue settings",
 };
 
