@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const LogoutIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -12,17 +13,32 @@ const LogoutIcon = () => (
 );
 
 export default function LogoutButton() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Clear sessionStorage before logging out
+    sessionStorage.removeItem('selectedVenue');
+    
+    // You can clear other session items here if needed
+    // For example, sessionStorage.clear() would clear everything
+    
+    // Log the cleanup
+    console.log('Session data cleared');
+    
+    // Navigate to logout endpoint
+    router.push('/api/auth/logout?returnTo=/');
+  };
+
   return (
     <div className="p-3">
-      <Link href="/api/auth/logout?returnTo=/">
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-        >
-          <LogoutIcon />
-          <span className="ml-2">Logout</span>
-        </Button>
-      </Link>
+      <Button
+        variant="ghost"
+        className="w-full justify-start text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+        onClick={handleLogout}
+      >
+        <LogoutIcon />
+        <span className="ml-2">Logout</span>
+      </Button>
     </div>
   );
 } 

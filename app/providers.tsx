@@ -1,5 +1,16 @@
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+'use client';
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <UserProvider>{children}</UserProvider>;
+import { SessionProvider } from 'next-auth/react';
+import { ReactNode } from 'react';
+
+interface ProvidersProps {
+  children: ReactNode;
+}
+
+export default function Providers({ children }: ProvidersProps) {
+  return (
+    <SessionProvider>
+      {children}
+    </SessionProvider>
+  );
 } 

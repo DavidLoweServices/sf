@@ -21,6 +21,14 @@ export async function GET(req: NextRequest) {
       sameSite: 'lax',
     });
     
+    // Also clear the venue selection cookie
+    response.cookies.set('selectedVenue', '', {
+      path: '/',
+      maxAge: 0, // Expire immediately
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+    
     return response;
   } catch (error) {
     console.error('Logout error:', error);
@@ -33,6 +41,14 @@ export async function GET(req: NextRequest) {
       path: '/',
       maxAge: 0, // Expire immediately
       sameSite: 'lax',
+    });
+    
+    // Also clear the venue selection cookie in the error case
+    response.cookies.set('selectedVenue', '', {
+      path: '/',
+      maxAge: 0, // Expire immediately
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
     });
     
     return response;

@@ -58,6 +58,34 @@ export async function GET(req: NextRequest) {
       sameSite: 'lax',
     });
     
+    // Initialize the default venue selection
+    try {
+      // Decode the access token to get venue data
+      const tokenParts = tokens.access_token.split('.');
+      if (tokenParts.length === 3) {
+        const padded = tokenParts[1].padEnd(tokenParts[1].length + (4 - tokenParts[1].length % 4) % 4, '=');
+        const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        
+        // Check if we have venues in the token
+        if (payload["app.venues"] && Array.isArray(payload["app.venues"]) && payload["app.venues"].length > 0) {
+          // Get the first venue as default
+          const defaultVenue = payload["app.venues"][0];
+          
+          // Set it in a cookie
+          response.cookies.set('selectedVenue', JSON.stringify(defaultVenue), {
+            path: '/',
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24 * 7, // 1 week
+          });
+        }
+      }
+    } catch (venueError) {
+      console.error('Error initializing venue in callback:', venueError);
+      // Non-fatal error, continue with login
+    }
+    
     return response;
   } catch (error) {
     console.error('Auth callback error:', error);
