@@ -3,9 +3,24 @@
 import { useState, useEffect } from 'react';
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
+interface JwtHeader {
+  alg: string;
+  typ: string;
+  kid?: string;
+}
+
+interface JwtPayload {
+  iss: string;
+  sub: string;
+  aud: string;
+  exp: number;
+  iat: number;
+  [key: string]: unknown;
+}
+
 interface DecodedJwt {
-  header: any;
-  payload: any;
+  header: JwtHeader;
+  payload: JwtPayload;
 }
 
 interface TokenData {
@@ -61,8 +76,8 @@ export default function JwtDebugPage() {
       };
       
       return {
-        header: parseJsonSafely(parseBase64(headerBase64)),
-        payload: parseJsonSafely(parseBase64(payloadBase64))
+        header: parseJsonSafely(parseBase64(headerBase64)) as JwtHeader,
+        payload: parseJsonSafely(parseBase64(payloadBase64)) as JwtPayload
       };
     } catch (error) {
       console.error('Error decoding JWT:', error);
