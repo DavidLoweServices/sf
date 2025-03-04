@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface User {
   sub: string;
@@ -54,7 +55,7 @@ export default function Profile() {
         <div>
           <div className="flex items-center gap-4 mb-4">
             {user.picture && (
-              <img 
+              <Image 
                 src={user.picture} 
                 alt={user.name || 'User'} 
                 className="w-12 h-12 rounded-full"
