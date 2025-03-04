@@ -393,7 +393,6 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
         {/* User Profile Button */}
         <UserProfileButton />
-        
         {/* Logout Button */}
         <LogoutButton />
       </aside>

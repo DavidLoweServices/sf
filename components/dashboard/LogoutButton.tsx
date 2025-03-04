@@ -29,7 +29,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <div className="p-3">
+    <div className="px-3 pt-1 pb-3">
       <Button
         variant="ghost"
         className="w-full justify-start text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"

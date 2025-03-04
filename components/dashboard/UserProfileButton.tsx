@@ -68,7 +68,7 @@ export default function UserProfileButton() {
       : '?';
 
   return (
-    <div className="p-3 border-t border-gray-200">
+    <div className="p-3 border-t border-gray-200 pb-1">
         <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100">
           {userData.picture ? (
             <Image 
