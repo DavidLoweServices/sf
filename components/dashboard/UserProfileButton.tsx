@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import useSWR from 'swr';
 
 interface User {
   sub?: string;
@@ -17,32 +18,13 @@ interface UserResponse {
   error?: string;
 }
 
-export default function UserProfileButton() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await fetch('/api/auth/me');
-        const data: UserResponse = await response.json();
-        
-        if (data.isAuthenticated && data.user) {
-          setUserData(data.user);
-        } else if (data.error) {
-          setError(data.error);
-        }
-      } catch (err) {
-        setError('Failed to fetch user profile');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    
-    fetchUserProfile();
-  }, []);
+export default function UserProfileButton() {
+  const { data, error, isLoading } = useSWR<UserResponse>('/api/auth/me', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  });
 
   if (isLoading) {
     return (
@@ -58,7 +40,7 @@ export default function UserProfileButton() {
     );
   }
 
-  if (error || !userData) {
+  if (error || !data?.isAuthenticated || !data?.user) {
     return (
       <div className="p-3 border-t border-gray-200">
         <Link 
@@ -74,6 +56,7 @@ export default function UserProfileButton() {
     );
   }
 
+  const userData = data.user;
   // Generate initials for avatar fallback
   const initials = userData.name 
     ? userData.name.charAt(0).toUpperCase() 
