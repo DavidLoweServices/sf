@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import UserProfileButton from "@/components/dashboard/UserProfileButton";
 import LogoutButton from "@/components/dashboard/LogoutButton";
-import { XIcon } from "lucide-react";
 
 // Improved JWT decoding function based on JwtDebugPage
 const decodeJwt = (token: string) => {
