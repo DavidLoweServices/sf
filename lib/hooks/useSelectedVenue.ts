@@ -18,18 +18,41 @@ export function useSelectedVenue() {
   const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Initialize from session storage or cookie
   useEffect(() => {
-    // Get initial venue from sessionStorage
-    const savedVenue = sessionStorage.getItem('selectedVenue');
-    if (savedVenue) {
+    const initializeVenue = async () => {
       try {
-        setSelectedVenue(JSON.parse(savedVenue));
-      } catch (e) {
-        console.error('Error parsing saved venue:', e);
+        // First check sessionStorage
+        const savedVenue = sessionStorage.getItem('selectedVenue');
+        if (savedVenue) {
+          setSelectedVenue(JSON.parse(savedVenue));
+          setIsLoading(false);
+          return;
+        }
+
+        // If no saved venue, fetch venues and set the first one
+        const response = await fetch('/api/auth/me');
+        const data = await response.json();
+        
+        if (data.isAuthenticated && data.tokens?.accessToken) {
+          const decodedToken = decodeJwt(data.tokens.accessToken);
+          
+          if (decodedToken && decodedToken["app.venues"] && Array.isArray(decodedToken["app.venues"])) {
+            const venuesList = decodedToken["app.venues"];
+            if (venuesList.length > 0) {
+              const firstVenue = venuesList[0];
+              setSelectedVenue(firstVenue);
+              sessionStorage.setItem('selectedVenue', JSON.stringify(firstVenue));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error initializing venue:', err);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    initializeVenue();
 
     // Listen for venue change events
     const handleVenueChange = (event: CustomEvent<{ venue: Venue }>) => {
@@ -67,4 +90,27 @@ export function useSelectedVenue() {
   };
   
   return { selectedVenue, changeVenue, isLoading };
+}
+
+// JWT decoding helper function
+function decodeJwt(token: string) {
+  try {
+    if (!token) return null;
+    
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      console.warn('Invalid token format (not 3 parts):', parts.length);
+      return null;
+    }
+    
+    const payloadBase64 = parts[1];
+    const padded = payloadBase64.padEnd(payloadBase64.length + (4 - payloadBase64.length % 4) % 4, '=');
+    const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = atob(base64);
+    
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error decoding JWT token:', error);
+    return null;
+  }
 } 
