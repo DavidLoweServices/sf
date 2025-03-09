@@ -2,7 +2,7 @@
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
-import StripePaymentsComponent from './StripePaymentsComponent';
+import StripePaymentsComponent from '../../../components/stripe/StripePaymentsComponent';
 
 export default function PayoutsPage() {
   const { selectedVenue } = useSelectedVenue();
