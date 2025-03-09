@@ -89,13 +89,13 @@ export default function JwtDebugPage() {
     async function fetchTokenData() {
       try {
         // First try with debug=true
-        const response = await fetch('/api/auth/me?debug=true');
+        const response = await fetch('/api/auth/me');
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
         
         const data = await response.json();
-        console.log('API response:', data);
+        //console.log('API response:', data);
         
         if (!data.isAuthenticated) {
           setTokenData({ error: 'Not authenticated' });

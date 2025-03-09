@@ -135,16 +135,9 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         }
         
         // Get the token from cookies or sessionStorage
-        const response = await fetch('/api/auth/me?debug=true');
+        const response = await fetch('/api/auth/me');
         const data = await response.json();
-        
-        // Add debug logging
-        console.log('Auth data received:', {
-          isAuthenticated: data.isAuthenticated,
-          hasUser: !!data.user,
-          hasTokens: !!data.tokens,
-        });
-        
+
         if (data.isAuthenticated && data.tokens?.accessToken) {
           const decodedToken = decodeJwt(data.tokens.accessToken);
           console.log('Decoded token payload:', decodedToken);
