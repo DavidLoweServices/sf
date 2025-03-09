@@ -95,6 +95,20 @@ const Icons = {
       <rect width="16" height="16" x="4" y="4" rx="2" />
     </svg>
   ),
+  Payouts: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" />
+    </svg>
+  ),
+  Transactions: () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M2 17h12a4 4 0 0 0 4-4V7" />
+      <path d="m2 7h12a4 4 0 0 1 4 4v6" />
+      <line x1="18" y1="3" x2="22" y2="7" />
+      <line x1="18" y1="11" x2="22" y2="7" />
+    </svg>
+  ),
 };
 
 interface SidebarProps {
@@ -247,6 +261,16 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       name: "Dashboard",
       href: "/dashboard",
       icon: <Icons.Dashboard />,
+    },
+    {
+      name: "Transactions",
+      href: "/dashboard/transactions",
+      icon: <Icons.Transactions />,
+    },
+    {
+      name: "Payouts",
+      href: "/dashboard/payouts",
+      icon: <Icons.Payouts />,
     },
     {
       name: "Settings",
