@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Wannabook | Dashboard",
-  description: "Your dashboard overview",
+  title: "Wannabook | Settings",
+  description: "Manage your account and venue settings",
 };
 
-export default function DashboardLayout({
+export default function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;

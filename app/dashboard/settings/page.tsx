@@ -1,17 +1,18 @@
-import { Metadata } from "next";
+'use client';
+
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
 import VenueSettingsDebug from "@/components/dashboard/VenueSettingsDebug";
 
-export const metadata: Metadata = {
-  title: "Wannabook | Settings",
-  description: "Manage your account and venue settings",
-};
-
 export default function Settings() {
+  const { selectedVenue } = useSelectedVenue();
+
   return (
     <DashboardLayout>
       <div className="p-5">
-        <h1 className="text-2xl font-semibold mb-5 text-gray-900">Settings</h1>
+        <h1 className="text-2xl font-semibold mb-5 text-gray-900">
+          Settings {selectedVenue ? `- ${selectedVenue.name}` : ''}
+        </h1>
         
         <div className="grid gap-5">
           {/* Account Settings Card */}

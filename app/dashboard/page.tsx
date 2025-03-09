@@ -1,16 +1,17 @@
-import { Metadata } from "next";
-import DashboardLayout from "@/components/dashboard/DashboardLayout";
+'use client';
 
-export const metadata: Metadata = {
-  title: "Wannabook | Dashboard",
-  description: "Your dashboard overview",
-};
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
 
 export default function Dashboard() {
+  const { selectedVenue } = useSelectedVenue();
+
   return (
     <DashboardLayout>
       <div className="p-5">
-        <h1 className="text-2xl font-semibold mb-5 text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-semibold mb-5 text-gray-900">
+          Dashboard {selectedVenue ? `- ${selectedVenue.name}` : ''}
+        </h1>
         
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {/* Dashboard cards */}

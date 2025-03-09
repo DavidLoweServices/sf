@@ -48,16 +48,14 @@ const StripeTransactionsComponent = () => {
     initializeStripeConnect();
   }, []);
 
-
-
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-lg font-medium mb-3 text-gray-800">Stripe Payouts</h2>
+      <h2 className="text-lg font-medium mb-3 text-gray-800">Stripe Transactions</h2>
       <div className="min-h-[400px]">
         {error ? (
           <div className="text-center text-red-500 py-4">{error}</div>
         ) : loading ? (
-          <div className="text-center text-gray-600 py-4">Loading payouts...</div>
+          <div className="text-center text-gray-600 py-4">Loading transactions...</div>
         ) : stripeConnect ? (
           <ConnectComponentsProvider connectInstance={stripeConnect}>
             <ConnectPayments />

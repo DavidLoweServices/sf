@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 
 // Define the Venue interface 
@@ -18,35 +20,17 @@ export function useSelectedVenue() {
   
   // Initialize from session storage or cookie
   useEffect(() => {
-    async function initializeVenue() {
+    // Get initial venue from sessionStorage
+    const savedVenue = sessionStorage.getItem('selectedVenue');
+    if (savedVenue) {
       try {
-        setIsLoading(true);
-        
-        // First check sessionStorage
-        const savedVenue = sessionStorage.getItem('selectedVenue');
-        if (savedVenue) {
-          setSelectedVenue(JSON.parse(savedVenue));
-          setIsLoading(false);
-          return;
-        }
-        
-        // If not in sessionStorage, try to initialize from server
-        const response = await fetch('/api/auth/initialize-venue');
-        const data = await response.json();
-        
-        if (data.success && data.venue) {
-          setSelectedVenue(data.venue);
-          sessionStorage.setItem('selectedVenue', JSON.stringify(data.venue));
-        }
-      } catch (error) {
-        console.error('Error initializing venue:', error);
-      } finally {
-        setIsLoading(false);
+        setSelectedVenue(JSON.parse(savedVenue));
+      } catch (e) {
+        console.error('Error parsing saved venue:', e);
       }
     }
-    
-    initializeVenue();
-    
+    setIsLoading(false);
+
     // Listen for venue change events
     const handleVenueChange = (event: CustomEvent<{ venue: Venue }>) => {
       setSelectedVenue(event.detail.venue);
