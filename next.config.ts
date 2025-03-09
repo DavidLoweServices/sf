@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' https://r.stripe.com/0 'unsafe-inline' 'unsafe-eval';",
+            value: "default-src 'self' data: gap: * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' * 'unsafe-inline' 'unsafe-eval';",
           },
         ],
       },
