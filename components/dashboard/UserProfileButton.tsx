@@ -46,6 +46,7 @@ export default function UserProfileButton() {
   if (error || !data?.isAuthenticated || !data?.user) {
     return (
       <div className="p-3 border-t border-gray-200">
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a 
           href="/api/auth/login?returnTo=/dashboard"
           className="flex items-center space-x-3 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 p-2 rounded-md"
