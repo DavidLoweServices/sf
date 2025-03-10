@@ -12,7 +12,7 @@ export default function Dashboard() {
       <div className="p-5">
         <h1 className="text-2xl font-semibold mb-5 text-gray-900">
           Dashboard {selectedVenue ? `- ${selectedVenue.name}` : ''}
-        </h1>
+        </h1> 
         
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {/* Total Revenue Card */}
