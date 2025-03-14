@@ -18,7 +18,7 @@ export default function PaymentProcessingStep({
     highest_ticket_sales_amount: data.payment_processing_statistics?.highest_ticket_sales_amount || '',
   });
 
-  const [pricingProfile, setPricingProfile] = useState(data.pricing_profile || 'test');
+  const [pricingProfile] = useState(data.pricing_profile || 'test');
 
   // Initialize form data from props only once
   useEffect(() => {
