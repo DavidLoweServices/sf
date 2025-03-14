@@ -14,7 +14,9 @@ import {  ChevronLeft,
           LayoutDashboard, 
           Settings, 
           BadgePoundSterling,
-          HandCoins } from 'lucide-react';
+          HandCoins,
+          CreditCard,
+          ClipboardList } from 'lucide-react';
 
 // Improved JWT decoding function based on JwtDebugPage
 const decodeJwt = (token: string) => {
@@ -68,6 +70,9 @@ const Icons = {
   ),
   Transactions: () => (
     <BadgePoundSterling className="h-5 w-5" />
+  ),
+  Connect: () => (
+    <CreditCard className="h-5 w-5" />
   ),
 };
 
@@ -207,28 +212,41 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       detail: { venue } 
     });
     window.dispatchEvent(venueChangeEvent);
+    
+    // Reload the current page to reflect the new venue selection
+    window.location.reload();
   };
 
   const navItems = [
     {
       name: "Dashboard",
       href: "/dashboard",
-      icon: <Icons.Dashboard />,
+      icon: <LayoutDashboard className="h-5 w-5" />,
     },
     {
       name: "Transactions",
       href: "/dashboard/transactions",
-      icon: <Icons.Transactions />,
+      icon: <BadgePoundSterling className="h-5 w-5" />,
     },
     {
       name: "Payouts",
       href: "/dashboard/payouts",
-      icon: <Icons.Payouts />,
+      icon: <HandCoins className="h-5 w-5" />,
+    },
+    {
+      name: "Connect",
+      href: "/dashboard/connect",
+      icon: <CreditCard className="h-5 w-5" />,
+    },
+    {
+      name: "GP Onboarding",
+      href: "/dashboard/gponboard",
+      icon: <ClipboardList className="h-5 w-5" />,
     },
     {
       name: "Settings",
       href: "/dashboard/settings",
-      icon: <Icons.Settings />,
+      icon: <Settings className="h-5 w-5" />,
     }
   ];
 

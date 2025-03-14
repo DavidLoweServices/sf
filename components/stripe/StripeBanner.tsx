@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { loadConnectAndInitialize } from "@stripe/connect-js/pure";
 import {
-  ConnectPayouts,
-  ConnectComponentsProvider,
+ConnectNotificationBanner,
+ConnectComponentsProvider,
 } from "@stripe/react-connect-js";
-import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
+import { useSelectedVenue } from '@/hooks/useSelectedVenue';
 
 type ConnectJsInstance = Awaited<ReturnType<typeof loadConnectAndInitialize>>;
 
-const StripePaymentsComponent = () => {
+
+export default function StripeBanner() {
   const [stripeConnect, setStripeConnect] = useState<ConnectJsInstance | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,11 +42,13 @@ const StripePaymentsComponent = () => {
               borderRadius: "0.5rem",
             }
           },
+          // Stripe instance options
+          ...(process.env.NODE_ENV === 'development' ? { betas: ['connect_enable_features_beta_1'] } : {})
         });
         setStripeConnect(instance);
       } catch (err) {
         console.error("Error initializing Stripe Connect:", err);
-        setError("Failed to load payouts. Please try again later.");
+        setError("Failed to load Stripe notification banner. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -56,31 +59,32 @@ const StripePaymentsComponent = () => {
 
   if (!selectedVenue) {
     return (
-      <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-        <h2 className="text-lg font-medium mb-3 text-gray-800">Stripe Payouts</h2>
-        <div className="min-h-[400px] flex items-center justify-center">
-          <div className="text-center text-gray-600 py-4">Please select a venue to view payouts</div>
-        </div>
+      <div className="text-center text-gray-600 py-2">
+        Please select a venue to view notifications
       </div>
     );
   }
 
-  return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-lg font-medium mb-3 text-gray-800">Stripe Payouts</h2>
-      <div className="min-h-[400px]">
-        {error ? (
-          <div className="text-center text-red-500 py-4">{error}</div>
-        ) : loading ? (
-          <div className="text-center text-gray-600 py-4">Loading payouts...</div>
-        ) : stripeConnect ? (
-          <ConnectComponentsProvider connectInstance={stripeConnect}>
-            <ConnectPayouts />
-          </ConnectComponentsProvider>
-        ) : null}
-      </div>
-    </div>
-  );
-};
+  if (error) {
+    return <div className="text-center text-red-500 py-2">{error}</div>;
+  }
 
-export default StripePaymentsComponent; 
+  if (loading) {
+    return <div className="text-center text-gray-600 py-2">Loading notifications...</div>;
+  }
+
+  if (!stripeConnect) {
+    return null;
+  }
+
+  return (
+    <ConnectComponentsProvider connectInstance={stripeConnect}>
+      <ConnectNotificationBanner
+        collectionOptions={{
+          fields: 'eventually_due',
+          futureRequirements: 'include',
+        }}
+      />
+    </ConnectComponentsProvider>
+  );
+} 
