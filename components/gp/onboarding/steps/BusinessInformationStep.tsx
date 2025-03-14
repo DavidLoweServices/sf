@@ -11,17 +11,18 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-
-interface BusinessInformationStepProps {
-  data: any;
-  onComplete: (data: any) => void;
-}
+import { 
+  StepProps, 
+  BusinessInfo, 
+  BUSINESS_TYPES, 
+  LEGAL_ENTITY_TYPES 
+} from '../types';
 
 export default function BusinessInformationStep({ 
   data, 
   onComplete 
-}: BusinessInformationStepProps) {
-  const [formData, setFormData] = useState({
+}: StepProps) {
+  const [formData, setFormData] = useState<BusinessInfo>({
     name: data.businessInfo?.name || '',
     type: data.businessInfo?.type || 'MERCHANT',
     legal_name: data.businessInfo?.legal_name || '',
@@ -105,9 +106,9 @@ export default function BusinessInformationStep({
               <SelectValue placeholder="Select business type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="MERCHANT">Merchant</SelectItem>
-              <SelectItem value="INDIVIDUAL">Individual</SelectItem>
-              <SelectItem value="PARTNER">Partner</SelectItem>
+              {Object.entries(BUSINESS_TYPES).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -207,11 +208,9 @@ export default function BusinessInformationStep({
               <SelectValue placeholder="Select legal entity type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="LIMITED_COMPANY">Limited Company</SelectItem>
-              <SelectItem value="SOLE_PROPRIETORSHIP">Sole Proprietorship</SelectItem>
-              <SelectItem value="PARTNERSHIP">Partnership</SelectItem>
-              <SelectItem value="PUBLIC_COMPANY">Public Company</SelectItem>
-              <SelectItem value="CHARITY">Charity / Non-profit</SelectItem>
+              {Object.entries(LEGAL_ENTITY_TYPES).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

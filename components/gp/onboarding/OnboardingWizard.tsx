@@ -9,6 +9,7 @@ import PersonsStep from './steps/PersonsStep';
 import ReviewStep from './steps/ReviewStep';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { OnboardingData } from './types';
 
 const STEPS = [
   'Business Information',
@@ -17,116 +18,6 @@ const STEPS = [
   'Persons',
   'Review'
 ];
-
-type OnboardingData = {
-  // Business Information
-  businessInfo: {
-    name: string;
-    type: string;
-    legal_name: string;
-    dba: string;
-    merchant_category_code: string;
-    website: string;
-    description: string;
-    registration_number: string;
-    ip_address: string;
-    notification_email: string;
-    legal_entity: string;
-    reference: string;
-    language: string;
-  };
-  // Addresses
-  addresses: {
-    functions: string[];
-    building_name?: string;
-    line_1: string;
-    line_2?: string;
-    line_3?: string;
-    months_at_address?: string;
-    city: string;
-    state?: string;
-    post_town?: string;
-    postal_code: string;
-    country: string;
-    phone?: {
-      country_code: string;
-      subscriber_number: string;
-    };
-  }[];
-  // Payment Processing
-  payment_processing_statistics: {
-    total_monthly_sales_amount: string;
-    average_ticket_sales_amount: string;
-    highest_ticket_sales_amount: string;
-  };
-  pricing_profile: string;
-  payment_methods: {
-    functions: string[];
-    name: string;
-    reference: string;
-    bank_transfer: {
-      account_holder_type: string;
-      account_type: string;
-      account_number: string;
-      bank: {
-        code: string;
-        address: {
-          line_1: string;
-          line_2?: string;
-          line_3?: string;
-          city: string;
-          postal_code: string;
-          country: string;
-        };
-      };
-    };
-  }[];
-  // Persons
-  persons: {
-    functions: string[];
-    first_name: string;
-    middle_name?: string;
-    last_name: string;
-    email: string;
-    date_of_birth: string;
-    birth_country: string;
-    citizenship_country: string;
-    job_title?: string;
-    equity_percentage?: string;
-    addresses: {
-      functions: string[];
-      building_name?: string;
-      building_number?: string;
-      line_1: string;
-      line_2?: string;
-      line_3?: string;
-      reference?: string;
-      months_at_address?: string;
-      city: string;
-      state?: string;
-      post_town?: string;
-      postal_code: string;
-      country: string;
-      contact_phone?: {
-        country_code: string;
-        subscriber_number: string;
-      };
-      work_phone?: {
-        country_code: string;
-        subscriber_number: string;
-      };
-    }[];
-  }[];
-  // Attestations & Notifications
-  attestations: {
-    name: string;
-    ip_address: string;
-    time_of_attestation: string;
-  }[];
-  notifications: {
-    status_url: string;
-  };
-};
 
 const defaultData: OnboardingData = {
   businessInfo: {

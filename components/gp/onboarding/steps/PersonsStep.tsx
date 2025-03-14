@@ -12,17 +12,18 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Plus, Trash2 } from 'lucide-react';
-
-interface PersonsStepProps {
-  data: any;
-  onComplete: (data: any) => void;
-}
+import { 
+  StepProps, 
+  Person,
+  PERSON_FUNCTIONS,
+  COUNTRIES 
+} from '../types';
 
 export default function PersonsStep({ 
   data, 
   onComplete 
-}: PersonsStepProps) {
-  const [persons, setPersons] = useState(
+}: StepProps) {
+  const [persons, setPersons] = useState<Person[]>(
     data.persons?.length > 0 
       ? data.persons 
       : [{
@@ -169,10 +170,9 @@ export default function PersonsStep({
                 <SelectValue placeholder="Select person type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="BENEFICIAL_OWNER">Beneficial Owner</SelectItem>
-                <SelectItem value="APPLICANT">Applicant</SelectItem>
-                <SelectItem value="DIRECTOR">Director</SelectItem>
-                <SelectItem value="AUTHORIZED_REPRESENTATIVE">Authorized Representative</SelectItem>
+                {Object.entries(PERSON_FUNCTIONS).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>{label}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -234,13 +234,9 @@ export default function PersonsStep({
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="US">United States</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  {/* Add more countries as needed */}
+                  {Object.entries(COUNTRIES).map(([code, name]) => (
+                    <SelectItem key={code} value={code}>{name}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -255,13 +251,9 @@ export default function PersonsStep({
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="US">United States</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  {/* Add more countries as needed */}
+                  {Object.entries(COUNTRIES).map(([code, name]) => (
+                    <SelectItem key={code} value={code}>{name}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -325,13 +317,9 @@ export default function PersonsStep({
                         <SelectValue placeholder="Select country" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="GB">United Kingdom</SelectItem>
-                        <SelectItem value="US">United States</SelectItem>
-                        <SelectItem value="CA">Canada</SelectItem>
-                        <SelectItem value="AU">Australia</SelectItem>
-                        <SelectItem value="DE">Germany</SelectItem>
-                        <SelectItem value="FR">France</SelectItem>
-                        {/* Add more countries as needed */}
+                        {Object.entries(COUNTRIES).map(([code, name]) => (
+                          <SelectItem key={code} value={code}>{name}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>

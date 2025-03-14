@@ -61,9 +61,9 @@ export default function ConnectPage() {
         });
         
         setConnectInstance(instance);
-      } catch (err: any) {
-        console.error("Error initializing Stripe Connect:", err);
-        setError(err instanceof Error ? err.message : "Failed to initialize Stripe Connect");
+      } catch (error: unknown) {
+        console.error("Error initializing Stripe Connect:", error);
+        setError(error instanceof Error ? error.message : "Failed to initialize Stripe Connect");
       } finally {
         setLoading(false);
       }

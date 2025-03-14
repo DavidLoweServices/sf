@@ -13,53 +13,17 @@ import {
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion';
-import { 
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
-
-interface AddressesStepProps {
-  data: any;
-  onComplete: (data: any) => void;
-}
-
-const ADDRESS_TYPES = [
-  { value: 'BUSINESS', label: 'Business Address' },
-  { value: 'SHIPPING', label: 'Shipping Address' },
-  { value: 'LEGAL', label: 'Legal/Registered Address' },
-  { value: 'PREVIOUS_BUSINESS', label: 'Previous Business Address' }
-];
-
-const addressTemplate = {
-  functions: ['BUSINESS'],
-  building_name: '',
-  line_1: '',
-  line_2: '',
-  line_3: '',
-  months_at_address: '',
-  city: '',
-  state: '',
-  post_town: '',
-  postal_code: '',
-  country: 'GB',
-  phone: {
-    country_code: '44',
-    subscriber_number: ''
-  }
-};
+  StepProps, 
+  Address,
+  ADDRESS_FUNCTIONS,
+  COUNTRIES
+} from '../types';
 
 export default function AddressesStep({ 
   data, 
   onComplete 
-}: AddressesStepProps) {
-  const [addresses, setAddresses] = useState(
+}: StepProps) {
+  const [addresses, setAddresses] = useState<Address[]>(
     data.addresses?.length > 0 
       ? data.addresses 
       : [{ 
@@ -167,11 +131,9 @@ export default function AddressesStep({
                 <SelectValue placeholder="Select address type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="BUSINESS">Business</SelectItem>
-                <SelectItem value="MAILING">Mailing</SelectItem>
-                <SelectItem value="SHIPPING">Shipping</SelectItem>
-                <SelectItem value="BILLING">Billing</SelectItem>
-                <SelectItem value="OPERATIONS">Operations</SelectItem>
+                {Object.entries(ADDRESS_FUNCTIONS).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>{label}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -240,13 +202,9 @@ export default function AddressesStep({
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="US">United States</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  {/* Add more countries as needed */}
+                  {Object.entries(COUNTRIES).map(([code, name]) => (
+                    <SelectItem key={code} value={code}>{name}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
