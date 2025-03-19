@@ -234,15 +234,17 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       icon: <HandCoins className="h-5 w-5" />,
     },
     {
-      name: "Connect",
+      name: "Stripe Onboard",
       href: "/dashboard/connect",
       icon: <CreditCard className="h-5 w-5" />,
     },
+    /*
     {
       name: "GP Onboarding",
       href: "/dashboard/gponboard",
       icon: <ClipboardList className="h-5 w-5" />,
     },
+    */
     {
       name: "Settings",
       href: "/dashboard/settings",

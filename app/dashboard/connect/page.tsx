@@ -76,7 +76,7 @@ export default function ConnectPage() {
     <DashboardLayout>
       <div className="p-5">
         <h1 className="text-2xl font-semibold mb-5 text-gray-900">
-          Stripe Connect {selectedVenue ? `- ${selectedVenue.name}` : ''}
+          Stripe Onboarding {selectedVenue ? `- ${selectedVenue.name}` : ''}
         </h1>
         
         {loading ? (

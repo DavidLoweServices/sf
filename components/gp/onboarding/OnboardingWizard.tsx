@@ -1,14 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+
+// Steps
 import StepIndicator from './StepIndicator';
 import BusinessInformationStep from './steps/BusinessInformationStep';
 import AddressesStep from './steps/AddressesStep';
 import PaymentProcessingStep from './steps/PaymentProcessingStep';
 import PersonsStep from './steps/PersonsStep';
 import ReviewStep from './steps/ReviewStep';
+
+// UI
 import { Button } from '@/components/ui/button';
+
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+
+// Types
 import { OnboardingData } from './types';
 
 const STEPS = [
