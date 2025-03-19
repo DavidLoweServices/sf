@@ -58,13 +58,6 @@ export default function StripeBanner() {
     initializeStripeConnect();
   }, [selectedVenue]);
 
-  if (!selectedVenue) {
-    return (
-      <div className="text-center text-gray-600 py-2">
-        Please select a venue to view notifications
-      </div>
-    );
-  }
 
   if (error) {
     return <div className="text-center text-red-500 py-2">{error}</div>;

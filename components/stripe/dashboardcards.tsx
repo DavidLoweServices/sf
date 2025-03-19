@@ -14,16 +14,31 @@ export default function DashboardCards() {
   const { selectedVenue } = useSelectedVenue();
   const [isOnboarded, setIsOnboarded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  // Handle mounting
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchCapabilities = async () => {
-      if (!selectedVenue) {
-        setIsLoading(false);
+      if (!selectedVenue || !hasMounted) {
         return;
       }
 
+      let savedCapabilities;
       try {
-        setIsLoading(true);
+        const stored = sessionStorage.getItem(`stripeCapabilities_${selectedVenue.venueid}`);
+        if (stored) {
+          savedCapabilities = JSON.parse(stored);
+          setIsOnboarded(savedCapabilities.payoutsEnabled && savedCapabilities.paymentsEnabled);
+        }
+      } catch (e) {
+        console.error('Error accessing session storage:', e);
+      }
+
+      try {
         const response = await fetch(`/api/stripeconnect?venueId=${selectedVenue.venueid}`);
         if (!response.ok) {
           throw new Error('Failed to fetch capabilities');
@@ -32,30 +47,23 @@ export default function DashboardCards() {
         const data = await response.json();
         if (data.capabilities) {
           setIsOnboarded(data.capabilities.payoutsEnabled && data.capabilities.paymentsEnabled);
-          // Update session storage with fresh data
-          sessionStorage.setItem(`stripeCapabilities_${selectedVenue.venueid}`, JSON.stringify(data.capabilities));
+          try {
+            sessionStorage.setItem(`stripeCapabilities_${selectedVenue.venueid}`, JSON.stringify(data.capabilities));
+          } catch (e) {
+            console.error('Error saving to session storage:', e);
+          }
         }
       } catch (error) {
         console.error('Error fetching Stripe capabilities:', error);
-        // Fallback to cached data if fetch fails
-        const savedCapabilities = sessionStorage.getItem(`stripeCapabilities_${selectedVenue.venueid}`);
-        if (savedCapabilities) {
-          try {
-            const capabilities: StripeCapabilities = JSON.parse(savedCapabilities);
-            setIsOnboarded(capabilities.payoutsEnabled && capabilities.paymentsEnabled);
-          } catch (e) {
-            console.error('Error parsing saved capabilities:', e);
-          }
-        }
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchCapabilities();
-  }, [selectedVenue]);
+  }, [selectedVenue, hasMounted]);
 
-  if (isLoading) {
+  if (!hasMounted || isLoading) {
     return (
       <div>
         {/* Stripe Banner skeleton */}

@@ -122,7 +122,7 @@ export default function ConnectPage() {
                           window.dispatchEvent(onboardingCompleteEvent);
                           
                           // Redirect to dashboard
-                          window.location.href = '/dashboard';
+                          //window.location.href = '/dashboard';
                         }
                       }
                     } catch (error) {
@@ -155,7 +155,7 @@ export default function ConnectPage() {
                           window.dispatchEvent(onboardingCompleteEvent);
                           
                           // Redirect to dashboard
-                          window.location.href = '/dashboard';
+                          //window.location.href = '/dashboard';
                         }
                       }
                     } catch (error) {
