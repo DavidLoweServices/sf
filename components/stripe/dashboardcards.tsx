@@ -5,11 +5,6 @@ import StripeBanner from "@/components/stripe/StripeBanner";
 import { useEffect, useState } from "react";
 import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
 
-interface StripeCapabilities {
-  payoutsEnabled: boolean;
-  paymentsEnabled: boolean;
-}
-
 export default function DashboardCards() {
   const { selectedVenue } = useSelectedVenue();
   const [isOnboarded, setIsOnboarded] = useState(false);
