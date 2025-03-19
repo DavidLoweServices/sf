@@ -15,8 +15,7 @@ import {  ChevronLeft,
           Settings, 
           BadgePoundSterling,
           HandCoins,
-          CreditCard,
-          ClipboardList } from 'lucide-react';
+          CreditCard } from 'lucide-react';
 
 // Improved JWT decoding function based on JwtDebugPage
 const decodeJwt = (token: string) => {
