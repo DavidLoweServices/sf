@@ -87,12 +87,79 @@ interface Venue {
   venueid: string;
 }
 
+interface StripeCapabilities {
+  payoutsEnabled: boolean;
+  paymentsEnabled: boolean;
+}
+
 export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname() || "";
   const [venues, setVenues] = useState<Venue[]>([]);
   const [venuesOpen, setVenuesOpen] = useState(false);
   const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
+  const [stripeCapabilities, setStripeCapabilities] = useState<StripeCapabilities | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Fetch Stripe capabilities when selected venue changes
+  useEffect(() => {
+    const fetchStripeCapabilities = async () => {
+      if (!selectedVenue) return;
+      
+      try {
+        // Check session storage first
+        const savedCapabilities = sessionStorage.getItem(`stripeCapabilities_${selectedVenue.venueid}`);
+        if (savedCapabilities) {
+          try {
+            const parsedCapabilities = JSON.parse(savedCapabilities);
+            setStripeCapabilities(parsedCapabilities);
+            return; // Exit early if we found valid capabilities in session storage
+          } catch (e) {
+            console.error('Error parsing saved capabilities:', e);
+            sessionStorage.removeItem(`stripeCapabilities_${selectedVenue.venueid}`);
+          }
+        }
+
+        // If no valid capabilities in session storage, fetch from API
+        const response = await fetch(`/api/stripeconnect?venueId=${selectedVenue.venueid}`);
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        if (data.capabilities) {
+          setStripeCapabilities(data.capabilities);
+          // Save to session storage
+          sessionStorage.setItem(`stripeCapabilities_${selectedVenue.venueid}`, JSON.stringify(data.capabilities));
+        }
+      } catch (error) {
+        console.error('Error fetching Stripe capabilities:', error);
+      }
+    };
+
+    fetchStripeCapabilities();
+
+    // Listen for onboarding complete event
+    const handleOnboardingComplete = (event: CustomEvent) => {
+      if (selectedVenue) {
+        setStripeCapabilities(event.detail.capabilities);
+      }
+    };
+
+    window.addEventListener('onboardingComplete', handleOnboardingComplete as EventListener);
+    return () => {
+      window.removeEventListener('onboardingComplete', handleOnboardingComplete as EventListener);
+    };
+  }, [selectedVenue]);
+
+  // Clear capabilities when venue changes
+  useEffect(() => {
+    if (selectedVenue) {
+      // Clear capabilities for other venues to prevent stale data
+      venues.forEach(venue => {
+        if (venue.venueid !== selectedVenue.venueid) {
+          sessionStorage.removeItem(`stripeCapabilities_${venue.venueid}`);
+        }
+      });
+    }
+  }, [selectedVenue, venues]);
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -213,8 +280,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     });
     window.dispatchEvent(venueChangeEvent);
     
-    // Reload the current page to reflect the new venue selection
-    window.location.reload();
+    // Redirect to dashboard page
+    window.location.href = '/dashboard';
   };
 
   const navItems = [
@@ -227,30 +294,32 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       name: "Transactions",
       href: "/dashboard/transactions",
       icon: <BadgePoundSterling className="h-5 w-5" />,
+      showIf: () => stripeCapabilities?.paymentsEnabled === true
     },
     {
       name: "Payouts",
       href: "/dashboard/payouts",
       icon: <HandCoins className="h-5 w-5" />,
+      showIf: () => stripeCapabilities?.payoutsEnabled === true
     },
     {
       name: "Stripe Onboard",
       href: "/dashboard/connect",
       icon: <CreditCard className="h-5 w-5" />,
+      showIf: () => stripeCapabilities && !stripeCapabilities.payoutsEnabled && !stripeCapabilities.paymentsEnabled
     },
-    /*
-    {
-      name: "GP Onboarding",
-      href: "/dashboard/gponboard",
-      icon: <ClipboardList className="h-5 w-5" />,
-    },
-    */
     {
       name: "Settings",
       href: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
     }
   ];
+
+  // Filter nav items based on conditions
+  const filteredNavItems = navItems.filter(item => {
+    if (!item.showIf) return true;
+    return item.showIf();
+  });
 
   return (
     <>
@@ -367,7 +436,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto">
           <ul className="space-y-1 px-2 pt-2">
-            {navItems.map((item) => {
+            {filteredNavItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <li key={item.href}>

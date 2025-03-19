@@ -96,11 +96,71 @@ export default function ConnectPage() {
             {connectInstance ? (
               <ConnectComponentsProvider connectInstance={connectInstance}>
                 <ConnectAccountOnboarding 
-                  onExit={() => {
+                  onExit={async () => {
                     console.log("The account has exited onboarding");
+                    
+                    // Recheck onboarding status
+                    try {
+                      const response = await fetch(`/api/stripeconnect?venueId=${selectedVenue?.venueid || ''}`);
+                      if (!response.ok) {
+                        throw new Error('Failed to fetch capabilities');
+                      }
+                      
+                      const data = await response.json();
+                      if (data.capabilities) {
+                        // Update session storage with fresh data
+                        sessionStorage.setItem(`stripeCapabilities_${selectedVenue?.venueid}`, JSON.stringify(data.capabilities));
+                        
+                        console.log(data.capabilities);
+
+                        // If onboarding is complete, redirect to dashboard
+                        if (data.capabilities.payoutsEnabled && data.capabilities.paymentsEnabled) {
+                          // Dispatch event to notify other components
+                          const onboardingCompleteEvent = new CustomEvent('onboardingComplete', {
+                            detail: { capabilities: data.capabilities }
+                          });
+                          window.dispatchEvent(onboardingCompleteEvent);
+                          
+                          // Redirect to dashboard
+                          window.location.href = '/dashboard';
+                        }
+                      }
+                    } catch (error) {
+                      console.error('Error checking onboarding status:', error);
+                    }
                   }}
-                  onStepChange={(step) => {
+                  onStepChange={async (step) => {
                     console.log("Onboarding step changed to:", step.step);
+                    
+                    // Recheck onboarding status
+                    try {
+                      const response = await fetch(`/api/stripeconnect?venueId=${selectedVenue?.venueid || ''}`);
+                      if (!response.ok) {
+                        throw new Error('Failed to fetch capabilities');
+                      }
+                      
+                      const data = await response.json();
+                      if (data.capabilities) {
+                        // Update session storage with fresh data
+                        sessionStorage.setItem(`stripeCapabilities_${selectedVenue?.venueid}`, JSON.stringify(data.capabilities));
+                        
+                        console.log(data.capabilities);
+
+                        // If onboarding is complete, redirect to dashboard
+                        if (data.capabilities.payoutsEnabled && data.capabilities.paymentsEnabled) {
+                          // Dispatch event to notify other components
+                          const onboardingCompleteEvent = new CustomEvent('onboardingComplete', {
+                            detail: { capabilities: data.capabilities }
+                          });
+                          window.dispatchEvent(onboardingCompleteEvent);
+                          
+                          // Redirect to dashboard
+                          window.location.href = '/dashboard';
+                        }
+                      }
+                    } catch (error) {
+                      console.error('Error checking onboarding status:', error);
+                    }
                   }}
                 />
               </ConnectComponentsProvider>

@@ -71,20 +71,6 @@ export async function GET(request: Request) {
       console.warn('created new account with id: ', accountId);
     }
 
-    // Check if account has payouts and payments enabled
-    if (accountId) {
-      try {
-        const account = await stripe.accounts.retrieve(accountId);
-        console.log('Stripe account capabilities:', {
-          payoutsEnabled: account.capabilities?.transfers === 'active',
-          paymentsEnabled: account.capabilities?.card_payments === 'active',
-          accountId: accountId
-        });
-      } catch (error) {
-        console.error('Error checking Stripe account capabilities:', error);
-      }
-    }
-
     const accountSession = await stripe.accountSessions.create({
       account: accountId,
       components: {
@@ -121,7 +107,27 @@ export async function GET(request: Request) {
       },
     });
 
-
+    // Check if account has payouts and payments enabled
+    if (accountId) {
+      try {
+        const account = await stripe.accounts.retrieve(accountId);
+        const capabilities = {
+          payoutsEnabled: account.capabilities?.transfers === 'active',
+          paymentsEnabled: account.capabilities?.card_payments === 'active',
+        };
+        console.log('Stripe account capabilities:', {
+          ...capabilities,
+          accountId: accountId
+        });
+        
+        return NextResponse.json({ 
+          clientSecret: accountSession.client_secret,
+          capabilities 
+        }, { status: 200 });
+      } catch (error) {
+        console.error('Error checking Stripe account capabilities:', error);
+      }
+    }
 
     return NextResponse.json({ clientSecret: accountSession.client_secret }, { status: 200 });
   } catch (error) {
