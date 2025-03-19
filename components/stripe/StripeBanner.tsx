@@ -37,6 +37,7 @@ export default function StripeBanner() {
           appearance: {
             variables: {
               colorPrimary: "#3b82f6",
+              colorBackground: "#fff",
               fontFamily: "Inter, system-ui, sans-serif",
               fontSizeBase: "16px",
               borderRadius: "0.5rem",
