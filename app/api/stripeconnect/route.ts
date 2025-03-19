@@ -3,7 +3,9 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-02-24.acacia',
+})
 
 interface VenueSettingsResponse {
   succeeded: boolean;
@@ -74,10 +76,18 @@ export async function GET(request: Request) {
     const accountSession = await stripe.accountSessions.create({
       account: accountId,
       components: {
+        account_management: {
+          enabled: true,
+          features: {
+            external_account_collection: true,
+            //disable_stripe_user_authentication: true,
+          },
+        },
         account_onboarding: {
           enabled: true,
           features: {
             external_account_collection: true,
+            //disable_stripe_user_authentication: true,
           },
         },
         payouts: {
@@ -87,6 +97,7 @@ export async function GET(request: Request) {
             standard_payouts: true,
             edit_payout_schedule: true,
             external_account_collection: true,
+            //disable_stripe_user_authentication: true,
           },
         },
         payments: {
@@ -102,8 +113,10 @@ export async function GET(request: Request) {
           enabled: true,
           features: {
             external_account_collection: true,
+            //disable_stripe_user_authentication: true,
           },
         },
+        
       },
     });
 

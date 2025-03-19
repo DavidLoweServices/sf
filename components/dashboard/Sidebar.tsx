@@ -15,7 +15,8 @@ import {  ChevronLeft,
           Settings, 
           BadgePoundSterling,
           HandCoins,
-          CreditCard } from 'lucide-react';
+          CreditCard,
+          Wallet } from 'lucide-react';
 
 // Improved JWT decoding function based on JwtDebugPage
 const decodeJwt = (token: string) => {
@@ -306,6 +307,12 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       href: "/dashboard/connect",
       icon: <CreditCard className="h-5 w-5" />,
       showIf: () => stripeCapabilities && !stripeCapabilities.payoutsEnabled && !stripeCapabilities.paymentsEnabled
+    },
+    {
+      name: "Stripe Account",
+      href: "/dashboard/stripeaccount",
+      icon: <Wallet className="h-5 w-5" />,
+      showIf: () => stripeCapabilities?.paymentsEnabled === true
     },
     {
       name: "Settings",
