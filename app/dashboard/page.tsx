@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { useSelectedVenue } from "@/lib/hooks/useSelectedVenue";
-import { PoundSterling, ChartSpline, Clock, TrendingUp } from "lucide-react";
+import { ChartSpline, Clock, TrendingUp } from "lucide-react";
 import StripeNotificationBanner from "@/components/stripe/StripeNotificationBanner";
 import { authFetch } from "@/lib/utils/authFetch";
 
