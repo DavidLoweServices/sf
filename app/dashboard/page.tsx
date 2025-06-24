@@ -89,11 +89,6 @@ export default function Dashboard() {
     fetchFinancialData();
   }, [selectedVenue?.venueid]);
 
-  // Calculate percentage change
-  const calculatePercentageChange = (current: number, previous: number): number => {
-    if (previous === 0) return current > 0 ? 100 : 0;
-    return ((current - previous) / previous) * 100;
-  };
 
   const formatDateRange = (startDate: string, endDate: string): string => {
     return `${startDate} - ${endDate}`;
