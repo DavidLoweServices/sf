@@ -1,0 +1,9 @@
+{
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/stripeconnect/[accountId]/route": "app/api/stripeconnect/[accountId]/route.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/transactions/page": "app/dashboard/transactions/page.js",
+  "/dashboard/payouts/page": "app/dashboard/payouts/page.js",
+  "/dashboard/dispute-management/page": "app/dashboard/dispute-management/page.js",
+  "/dashboard/account-management/page": "app/dashboard/account-management/page.js"
+}
