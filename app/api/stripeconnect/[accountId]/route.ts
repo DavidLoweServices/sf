@@ -26,7 +26,7 @@ export async function GET(
           },
         },
         disputes_list: {
-          enabled: true,
+          enabled: true, 
           features: {
             refund_management: true,
             dispute_management: true,
