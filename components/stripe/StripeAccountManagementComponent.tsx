@@ -38,7 +38,7 @@ const StripeAccountManagementComponent = () => {
       if (!selectedVenue) return;
       
       try {
-        const response = await authFetch(`https://${process.env.NEXT_PUBLIC_WANNABOOK_API_URL}/venuesettings/${selectedVenue.venueid}`);
+        const response = await authFetch(`https://dev-api.wannabook.online/venuesettings/${selectedVenue.venueid}`);
         
         if (!response.ok) {
           throw new Error(`Failed to fetch venue settings: ${response.statusText}`);

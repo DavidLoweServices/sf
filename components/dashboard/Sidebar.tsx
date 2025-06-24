@@ -215,6 +215,9 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       detail: { venue } 
     });
     window.dispatchEvent(venueChangeEvent);
+    
+    // Refresh the current page to update all components with the new venue
+    window.location.reload();
   };
 
   const navItems = [
